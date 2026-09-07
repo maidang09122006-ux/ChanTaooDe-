@@ -1,0 +1,56 @@
+# Dữ liệu BTC cấp + tự sinh — KHÔNG push (quá lớn, tái tạo được từ script,
+# xem README.md mục "Tái tạo dữ liệu" cho thứ tự chạy đúng)
+/data/
+/data_retrieve/
+/data123/
+/outputs/
+
+# Candidate đã upload lên Kaggle (tự sinh lại bằng pipeline/build_layer3_candidates*.py)
+/kaggle_layer2/upload/
+/kaggle_layer3/upload/
+
+# Kết quả tải về từ Kaggle để nhầm chỗ / thư mục tạm
+/layer3_results/
+scratchpad*
+
+# Script tái tạo ablation ĐÃ ĐÓNG (RRF, max_per_doc, granularity Khoản, Layer1.5
+# BM25...) — giữ local để tự verify khi cần, không push vì không dùng trong
+# production pipeline hiện tại, số liệu đã có sẵn trong docs/EXPERIMENT_LOG.md
+/pipeline/build_expensive_indexes.py
+/pipeline/build_khoan_doc_run.py
+/pipeline/build_layer15_run.py
+/pipeline/build_layer2_dense_run.py
+/pipeline/build_layer3_rerank_run.py
+/pipeline/build_retrieval_runs.py
+/pipeline/eval_retrieval_runs.py
+/pipeline/eval_hybrid_designs.py
+
+# Harness chấm điểm cá nhân — thuộc phạm vi A (chấm điểm/oracle eval), chưa
+# từng được gọi trong pipeline B (verify bằng grep) — giữ local không push
+/src/common/scoring.py
+
+# Kế hoạch nâng cấp/plan nội bộ — giữ riêng, không public trong repo này.
+# Không có file nào SẼ PUSH tham chiếu tới 3 file này (đã verify + sửa lại
+# các dòng từng trỏ tới PLAN_NANG_CAP.md trong SYSTEM_SCAFFOLD.md/README.md)
+/docs/PLAN_NANG_CAP.md
+/docs/PLAN_PUBLIC_OFFICIAL.md
+/docs/KE_HOACH_TIEP_THEO_B.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code — trạng thái/scratch nội bộ của tool, không phải code project
+.claude/
+.claude-scratch/
