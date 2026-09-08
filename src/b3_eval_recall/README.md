@@ -1,6 +1,6 @@
 # B3 — Đo Recall & chốt granularity
 
-Trạng thái: **`eval_recall.py` đã code + chạy test sơ bộ trên data thật (06/08/2026)**, xem `docs/EXPERIMENT_LOG.md` entry `[B3] 06/08` và `[B2] 06/08` (kết quả + 2 lần OOM đã sửa). Còn 1 câu hỏi mở thật sự (xem bên dưới).
+Trạng thái: **`eval_recall.py` đã code + chạy test sơ bộ trên data thật (06/08/2026)**. Còn 1 câu hỏi mở thật sự (xem bên dưới).
 
 ## Bài toán
 
@@ -30,4 +30,4 @@ Output: `recall_at_k()` / `recall_at_multiple_k()` → `{"recall_at_k", "k", "n_
 
 ## Giới hạn sandbox (không phải giới hạn thuật toán)
 
-Cả B0 (`build_shingle_index`) và B2 (`build_index`/underthesea) đều OOM trên sandbox 3.8GB RAM khi chạy full corpus/full pool — 2 nguyên nhân khác nhau, cả hai đã có workaround tạm (pool ngẫu nhiên cho B0, cap độ dài văn bản cho B2). Số liệu chính thức cần chạy trên máy đủ RAM. Chi tiết đầy đủ: `docs/EXPERIMENT_LOG.md`.
+Cả B0 (`build_shingle_index`, đã thay thế) và B2 (`build_index`/underthesea) từng OOM trên sandbox 3.8GB RAM khi chạy full corpus/full pool trong giai đoạn đầu — 2 nguyên nhân khác nhau, đã sửa (máy hiện tại không còn giới hạn RAM này).

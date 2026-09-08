@@ -5,10 +5,11 @@
 ## Bắt đầu từ đâu
 
 1. **`docs/SYSTEM_SCAFFOLD.md`** — bản đồ tổng, luôn cập nhật đúng hiện tại: cấu trúc thư mục, trạng thái từng module (B0-B7), thứ tự chạy pipeline, việc còn phải làm. **Đọc file này trước tiên.**
-2. **`docs/BAO_CAO_TONG_HOP_B.md`** — báo cáo kỹ thuật đầy đủ, viết cho người chưa biết gì về dự án.
-3. **`docs/EXPERIMENT_LOG.md`** — nhật ký thực nghiệm append-only, mọi số liệu/quyết định có ngày tháng.
-4. Docstring đầu mỗi file `.py` — spec hiện tại của riêng module đó (input/output/workflow).
-5. `README.md` trong từng thư mục `src/bN_*/` — câu hỏi còn mở, lịch sử quyết định của module đó.
+2. Docstring đầu mỗi file `.py` — spec hiện tại của riêng module đó (input/output/workflow).
+3. `README.md` trong từng thư mục `src/bN_*/` — câu hỏi còn mở, lịch sử quyết định của module đó.
+
+Nhật ký thực nghiệm chi tiết + báo cáo kỹ thuật đầy đủ được giữ riêng (tài liệu nội bộ, không
+trong repo này) — hỏi trực tiếp nếu cần đào sâu hơn những gì `SYSTEM_SCAFFOLD.md` tóm tắt.
 
 ## Việc B làm (tóm tắt 1 câu mỗi bước)
 
@@ -35,7 +36,7 @@ B7  — KHÔNG PHẢI VIỆC CỦA B (thuộc A) — B chỉ cần output đúng
 
 - ✅ **Baseline B0→B6 hoàn chỉnh, đã chạy end-to-end trên `data/public-official.json`** (1.000 câu tập ĐÍCH nộp bài) — không còn là việc "chưa làm", đã có **3 bản nộp thật lên leaderboard** (`outputs/qa_packages_public_v1_top3.json` = 0,4506 điểm, tốt nhất hiện tại; `v2_top1` = 0,4430; `v3_top1_raw` đang chờ điểm).
 - Layer 3 rerank đã CHỐT GIỮ (xác nhận qua 2 nguồn nhãn độc lập, +10-14đ% Hit@1 cấp Khoản trên tập giữ kín).
-- **Trước khi tự nghĩ hướng nâng cấp mới**: đọc kỹ `docs/BAO_CAO_TONG_HOP_B.md` mục III/IV và toàn bộ `docs/EXPERIMENT_LOG.md` — nhiều hướng tưởng hay (RRF, `max_per_doc=1`, `select_span`, ràng buộc đa dạng văn bản...) đã được đo và **đóng lại bằng số liệu cụ thể**, đừng mất công đo lại đúng những thứ đó.
+- **Trước khi tự nghĩ hướng nâng cấp mới**: hỏi trực tiếp về các hướng đã thử và đóng lại (RRF, `max_per_doc=1`, `select_span`, ràng buộc đa dạng văn bản...) — đều đã được đo và **đóng lại bằng số liệu cụ thể**, đừng mất công đo lại đúng những thứ đó.
 - Chi tiết đầy đủ từng module: xem bảng "Trạng thái từng module" trong `docs/SYSTEM_SCAFFOLD.md`.
 
 ## Cài đặt

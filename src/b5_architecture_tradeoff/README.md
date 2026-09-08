@@ -10,7 +10,7 @@ So sánh phương án phân bổ ngân sách tham số — càng nhiều tham s�
 
 ## Quyết định ĐÃ CHỐT (13/08/2026, có số liệu thật — không còn là giả thuyết)
 
-Khác bản cũ ("chưa chốt gì, chờ B7") — giờ **đã có số liệu thật từ ablation trên `data_retrieve`** (xem `docs/EXPERIMENT_LOG.md` entry `[B2] 13/08`), đủ để quyết định:
+Khác bản cũ ("chưa chốt gì, chờ B7") — giờ **đã có số liệu thật từ ablation trên `data_retrieve`**, đủ để quyết định:
 
 **Giữ CẢ 2: BM25 (Layer 1/1.5) VÀ dense (Layer 2, BGE-M3)** — không phải chọn 1. Lý do: đo được BM25 và dense **thất bại ở những câu khác nhau** (chỉ 2.6% cùng thất bại) — bổ trợ nhau thật, không phải dense chỉ "làm lại việc BM25 tốt hơn 1 chút". Hợp (union) 2 nguồn: coverage tăng từ 89.8% (BM25 riêng) lên **97.4%**.
 
@@ -24,7 +24,7 @@ Khác bản cũ ("chưa chốt gì, chờ B7") — giờ **đã có số liệu 
 | Layer 3 (reranker) | `BAAI/bge-reranker-v2-m3` (cùng họ BAAI với Layer 2) | ~568M |
 | **Tổng B dùng** | | **~1,136 tỷ / 2,3 tỷ được cấp (49,4%)** |
 
-**~1,164 tỷ còn dư (50,6% phần của B) — QUYẾT ĐỊNH KHÔNG DÙNG HẾT** — đúng tinh thần "chỉ tiêu khi có bằng chứng cần" đã chốt từ đầu, không tiêu chỉ vì "còn ngân sách". Retrieval đã đo được coverage 97,4% (Hit@50), Layer 3 rerank xác nhận cải thiện thêm +10-14đ% Hit@1 (xem `docs/EXPERIMENT_LOG.md` [B2/Layer3] 30/08) — không thấy bằng chứng cần model lớn hơn.
+**~1,164 tỷ còn dư (50,6% phần của B) — QUYẾT ĐỊNH KHÔNG DÙNG HẾT** — đúng tinh thần "chỉ tiêu khi có bằng chứng cần" đã chốt từ đầu, không tiêu chỉ vì "còn ngân sách". Retrieval đã đo được coverage 97,4% (Hit@50), Layer 3 rerank xác nhận cải thiện thêm +10-14đ% Hit@1 — không thấy bằng chứng cần model lớn hơn.
 
 ## Kiến trúc cuối (ĐÃ CODE, đang chạy)
 

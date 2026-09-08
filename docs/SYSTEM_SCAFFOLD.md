@@ -10,9 +10,11 @@
 |---|---|---|
 | Docstring đầu `*.py` | Spec HIỆN TẠI: bài toán, input/output, workflow. | Mỗi lần mở file để code. |
 | `README.md` mỗi module | Câu hỏi CÒN MỞ, rationale, tham khảo. | Khi cần ra quyết định hoặc review lại. |
-| `docs/EXPERIMENT_LOG.md` | Nhật ký chung, **append-only**, đầy đủ mọi số liệu tới 30/08. | Sau mỗi lần thử nghiệm — ghi ngay. |
-| `docs/BAO_CAO_TONG_HOP_B.md` | Báo cáo kỹ thuật đầy đủ, viết cho người chưa biết gì — cơ chế + số đo + quyết định. | Khi cần hiểu tổng quan hoặc trình bày cho người khác. |
-| File này (`SYSTEM_SCAFFOLD.md`) | Bản đồ LUÔN PHẢI ĐÚNG với hiện tại. | Khi cần biết "hiện tại đang ở đâu, file nào ở đâu". |
+| File này (`SYSTEM_SCAFFOLD.md`) | Bản đồ LUÔN PHẢI ĐÚNG với hiện tại — duy nhất trong repo này. | Khi cần biết "hiện tại đang ở đâu, file nào ở đâu". |
+
+Nhật ký thực nghiệm chi tiết + báo cáo kỹ thuật đầy đủ (10 quyết định kèm số liệu, phân tích
+giới hạn...) được giữ riêng dạng tài liệu nội bộ (PDF), không nằm trong repo này — liên hệ trực
+tiếp nếu cần đào sâu 1 quyết định cụ thể hơn những gì file này tóm tắt.
 
 ## Cấu trúc thư mục (cập nhật 31/08/2026 — sau đợt dọn dẹp lần 2)
 
@@ -38,8 +40,8 @@ PROJECT/
 │                                 rerank_notebook.py, upload/layer3_candidates_heldout.jsonl (candidate
 │                                 800 câu heldout — bản train 7.000 câu đã xoá 31/08, tái tạo được bằng
 │                                 pipeline/build_layer3_candidates.py nếu cần chạy lại)
-├── docs/                        DATA_NOTES.md, EXPERIMENT_LOG.md, BAO_CAO_TONG_HOP_B.md,
-│                                 KE_HOACH_TIEP_THEO_B.md, SYSTEM_SCAFFOLD.md (file này)
+├── docs/                        SYSTEM_SCAFFOLD.md (file này) — nhật ký/báo cáo chi tiết giữ
+│                                 riêng dạng tài liệu nội bộ, không trong repo
 ├── src/
 │   ├── common/                   config.py (CORPUS_DIR trỏ data/corpus/), io_utils.py, scoring.py
 │   ├── b0_autolabel/             ✅ dùng B2 search_units() tìm candidate, SW align cấp Khoản
@@ -99,7 +101,7 @@ backup trước patch bug B1 — patch đã xác nhận ổn định), `kaggle_l
 (386MB, đã upload Kaggle xong, tái tạo được), `layer3_results/` (28MB, trùng `outputs/layer3/`),
 `outputs/qa_packages_heldout.jsonl` (5,5MB, đã gộp vào `.json`) — tổng ~1,3GB giải phóng.
 
-**Lưu ý đã dọn dẹp 20/08 (lần 1)**: xoá 21 file log/txt rác ở gốc thư mục (nội dung đã có trong EXPERIMENT_LOG), `data_retrieve/selected-contexts/` (485MB, trùng lặp không dùng), `kaggle_layer2/upload/` (689MB, đã dùng xong), 2 index BM25 của config ablation đã loại (`_name`, `_nocap`, 168MB) — tổng ~1,34GB giải phóng.
+**Lưu ý đã dọn dẹp 20/08 (lần 1)**: xoá 21 file log/txt rác ở gốc thư mục, `data_retrieve/selected-contexts/` (485MB, trùng lặp không dùng), `kaggle_layer2/upload/` (689MB, đã dùng xong), 2 index BM25 của config ablation đã loại (`_name`, `_nocap`, 168MB) — tổng ~1,34GB giải phóng.
 
 ## Luồng dữ liệu — 5 nguồn, mỗi nguồn chia khác nhau
 
@@ -144,9 +146,13 @@ Trong tập heldout 800 câu: **78 câu `unit_type="khoan"`** (dùng trong mọi
 
 ## Thứ tự chạy pipeline (build script, khi cần tái tạo từ đầu)
 
+Bước build index cấp Khoản (`outputs/bm25_khoan_index.pkl`, dùng cho Layer 1.5 dự phòng) nằm
+trong 1 script ablation lịch sử giữ riêng ngoài repo — nếu cần, tự viết lại bằng
+`retrieve.build_index()` trên dict `{khoan_id: text}` duyệt từ `parsed_corpus.jsonl` (xem
+`expand_to_units()` trong `src/b2_retrieval/retrieve.py` để biết cách duyệt đúng cấu trúc).
+
 ```
-build_parsed_corpus.py → build_bm25_index.py (Layer 1, cache) → build_expensive_indexes.py (chỉ cần
-    biến thể "khoan" — bản "nocap"/"name" đã loại, không cần build lại) → build_b0_labels.py (B0 warmup)
+build_parsed_corpus.py → build_bm25_index.py (Layer 1, cache) → build_b0_labels.py (B0 warmup)
     → build_b0_labels_train_sample.py (B0 dev-sample 1.500 câu, ĐÃ DÙNG TUNE)
     → build_b0_labels_train_heldout.py (B0 TẬP GIỮ KÍN 800 câu, chạy theo lô resumable — KHÔNG dùng tune)
     → [Kaggle] embed_corpus_notebook.py → patch_layer2_embeddings.py (vá embedding sau khi sửa bug B1)
@@ -168,7 +174,7 @@ build_parsed_corpus.py → build_bm25_index.py (Layer 1, cache) → build_expens
 
 | Module | Trạng thái | Việc còn lại |
 |---|---|---|
-| B0 autolabel | ✅ ổn định, độ tin đã kiểm chứng khách quan (61,9%, xem EXPERIMENT_LOG [B0] 17/08) — nhưng COVERAGE thấp (198/800 = 24,8% tập giữ kín đạt confidence≥0.6) | Cân nhắc hạ `B0_CONFIDENCE_TRUST` (có thể đang loại nhãn đúng không cần thiết) |
+| B0 autolabel | ✅ ổn định, độ tin đã kiểm chứng khách quan (61,9%) — nhưng COVERAGE thấp (198/800 = 24,8% tập giữ kín đạt confidence≥0.6) | Cân nhắc hạ `B0_CONFIDENCE_TRUST` (có thể đang loại nhãn đúng không cần thiết) |
 | B1 parser | ✅ full corpus, 3/4 bug đã sửa (kể cả bug text rỗng 7.163 unit, 17/08) | Bug danh sách con đánh số trùng (7.632 `khoan_id` trùng) — ghi nhận, chưa sửa |
 | B2 retrieval | ✅ `search_units_hybrid()` là thiết kế cuối, đã wire đủ Layer 1+1.5+2+Union; Layer 3 ĐÃ CHỐT GIỮ (xác nhận cả 2 cấp, 2 nguồn nhãn độc lập B0+citation) | Formalize Layer 3 thành quy trình batch chuẩn cho `public-official.json` (CHƯA CHẠY — xem trên) |
 | B3 eval recall | ✅ đầy đủ, kể cả đo trần chunking (31,1% câu cần thông tin ngoài 1 Khoản) | ĐÃ QUYẾT 31/08: mở rộng context sang cả Điều (không phải Khoản lân cận) — xem dưới |
@@ -177,7 +183,7 @@ build_parsed_corpus.py → build_bm25_index.py (Layer 1, cache) → build_expens
 | B6 context package | ✅ schema xác nhận với C 31/08 (article/clause tách rời + document_number). **ĐẢO NGƯỢC quyết định top-3**: C xác nhận Generator copy máy móc, chỉ xử lý 1 context/câu — `qa_packages_heldout.json` giờ TOP_N=1 + context mở rộng cả Điều (Hit rate 46,5%→52,2%, xem `eval_context_expansion_heldout.py`) | Xác nhận field `document` với Generator (còn treo) |
 | B7 oracle eval | ❌ KHÔNG PHẢI VIỆC CỦA B (thuộc A) | B chỉ cần đảm bảo `qa_packages_*.json` đúng schema, gửi C/A dùng |
 
-**Bảng số liệu B2 chốt cuối cùng — Layer 3, 2 nguồn độc lập** (xem EXPERIMENT_LOG `[B2/Layer3] 20/08` và `30-31/08`, `outputs/LAYER3_EVALUATION_SUMMARY.md`):
+**Bảng số liệu B2 chốt cuối cùng — Layer 3, 2 nguồn độc lập** (xem `outputs/LAYER3_EVALUATION_SUMMARY.md`, tự sinh lại bằng `pipeline/eval_layer3_rerank.py`/`eval_layer3_rerank_heldout.py`):
 
 | K | Cấp văn bản (n=7.000, `data_retrieve`) | Cấp Khoản, B0 gold (n=198) | Cấp Khoản, citation gold (n=78) |
 |---|---|---|---|
@@ -200,10 +206,10 @@ build_parsed_corpus.py → build_bm25_index.py (Layer 1, cache) → build_expens
 ## Việc nên làm tiếp theo
 
 **Baseline B0→B6 đã đóng** (chạy xong end-to-end trên `public-official.json`, có điểm LB thật).
-Trước khi tự nghĩ hướng nâng cấp mới, đọc kỹ mục III (10 quyết định thiết kế) và mục IV (giới
-hạn/phát hiện) của `docs/BAO_CAO_TONG_HOP_B.md`, cùng toàn bộ `docs/EXPERIMENT_LOG.md` —
-nhiều hướng tưởng hợp lý (RRF, `max_per_doc=1`, `select_span`, ràng buộc đa dạng văn bản) đã
-được đo và **đóng lại bằng số liệu cụ thể**, đừng mất công đo lại đúng những thứ đó.
+Trước khi tự nghĩ hướng nâng cấp mới — **hỏi trực tiếp** về các hướng đã thử và đóng lại
+(RRF làm sụp Hit@1, `max_per_doc=1` "thắng giả" ở cấp văn bản nhưng sập Hit cấp Khoản,
+`select_span` xoá mất đáp án 55,6% số lần) — tránh mất công đo lại đúng những thứ đã có
+kết luận rõ ràng bằng số liệu.
 
 ## Danh sách câu hỏi/việc mở cần xác nhận
 

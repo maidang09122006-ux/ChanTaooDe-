@@ -1,6 +1,6 @@
 # B4 — Chọn đoạn trích
 
-Trạng thái: **đã code baseline v0** (`selection.py`, `select_span()`), test đối chiếu nhãn B0 đạt 67% (10/15) — xem `docs/EXPERIMENT_LOG.md` entry `[B4] 06/08`. Còn 1 câu hỏi mở thật (xem bên dưới).
+Trạng thái: **đã code baseline v0** (`selection.py`, `select_span()`), test đối chiếu nhãn B0 đạt 67% (10/15). Còn 1 câu hỏi mở thật (xem bên dưới). Lưu ý: `select_span()` sau đó đo được có hại (xoá đáp án 55,6% số lần) và đã loại khỏi pipeline chính — xem cảnh báo trong docstring hàm.
 
 ## Bài toán
 

@@ -30,11 +30,17 @@ scratchpad*
 /src/common/scoring.py
 
 # Kế hoạch nâng cấp/plan nội bộ — giữ riêng, không public trong repo này.
-# Không có file nào SẼ PUSH tham chiếu tới 3 file này (đã verify + sửa lại
-# các dòng từng trỏ tới PLAN_NANG_CAP.md trong SYSTEM_SCAFFOLD.md/README.md)
 /docs/PLAN_NANG_CAP.md
 /docs/PLAN_PUBLIC_OFFICIAL.md
 /docs/KE_HOACH_TIEP_THEO_B.md
+
+# Nhật ký thực nghiệm thô + báo cáo kỹ thuật đầy đủ + audit dữ liệu — giữ
+# riêng dạng tài liệu nội bộ (PDF, gửi trực tiếp cho team giống cách Team IR
+# làm), không public trong repo này. Đã verify + sửa lại toàn bộ tham chiếu
+# trong SYSTEM_SCAFFOLD.md/README.md/src/*/README.md để không còn dead link.
+/docs/EXPERIMENT_LOG.md
+/docs/BAO_CAO_TONG_HOP_B.md
+/docs/DATA_NOTES.md
 
 # Python
 __pycache__/
